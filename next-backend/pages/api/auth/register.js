@@ -1,7 +1,10 @@
 import bcrypt from 'bcrypt';
 import pool from '../../../lib/db';
+import { runMiddleware } from '@/lib/cors';
 
 export default async function handler(req, res) {
+    await runMiddleware(req, res, () => {});
+
     if (req.method === 'POST') {
         const { name, email, password, confirmPassword } = req.body;
 

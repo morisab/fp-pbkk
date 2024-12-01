@@ -1,8 +1,12 @@
 import pool from '../../../lib/db';  // Database connection
-import { verifyToken, verifyAdmin } from '../../../lib/auth';  // Assuming authentication middleware
+import { verifyToken, verifyAdmin } from '../../../lib/auth';  // Authentication middleware
+import { runMiddleware } from '../../../lib/cors';  // Import middleware CORS
 
 // Create a new order or get all orders
 export default async function handler(req, res) {
+    // Menjalankan middleware CORS
+    await runMiddleware(req, res, () => {});
+
     if (req.method === 'POST') {
         // Create a new order
         const { user_id, order_items } = req.body;
@@ -48,7 +52,7 @@ export default async function handler(req, res) {
     } else if (req.method === 'GET') {
         // Get all orders (admin only)
         try {
-            verifyToken(req); // Make sure the user is authenticated
+            verifyToken(req); // Ensure the user is authenticated
             verifyAdmin(req); // Ensure the user is an admin
             const [orders] = await pool.query('SELECT * FROM orders');
             return res.status(200).json(orders);

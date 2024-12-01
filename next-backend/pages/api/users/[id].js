@@ -1,14 +1,18 @@
 import pool from '../../../lib/db';  // Database connection
 import { verifyToken, verifyAdmin } from '../../../lib/auth';  // Authentication middleware
+import { runMiddleware } from '../../../lib/cors';  // Import middleware CORS
 
 // Handle user operations (GET, PUT, DELETE)
 export default async function handler(req, res) {
+    // Menjalankan middleware CORS
+    await runMiddleware(req, res, () => {});
+
     const { id } = req.query;
 
     if (req.method === 'GET') {
         // Get a user by ID
         try {
-            verifyToken(req); // Make sure the user is authenticated
+            verifyToken(req); // Ensure the user is authenticated
             verifyAdmin(req); // Ensure the user is an admin
             const [rows] = await pool.query('SELECT id, name, email FROM users WHERE id = ?', [id]);
             const user = rows[0];
@@ -30,7 +34,7 @@ export default async function handler(req, res) {
         }
 
         try {
-            verifyToken(req); // Make sure the user is authenticated
+            verifyToken(req); // Ensure the user is authenticated
             verifyAdmin(req); // Ensure the user is an admin
             const updates = [name, email, id];
 
@@ -49,7 +53,7 @@ export default async function handler(req, res) {
     } else if (req.method === 'DELETE') {
         // Delete a user
         try {
-            verifyToken(req); // Make sure the user is authenticated
+            verifyToken(req); // Ensure the user is authenticated
             verifyAdmin(req); // Ensure the user is an admin
             const [result] = await pool.query('DELETE FROM users WHERE id = ?', [id]);
 

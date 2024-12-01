@@ -1,0 +1,121 @@
+/* Import font dari Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&family=Metal&display=swap");
+
+/* Gaya untuk container utama */
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative; /* Untuk penempatan tombol yang fleksibel */
+  overflow: hidden; /* Pastikan gambar latar belakang tidak keluar dari tampilan */
+}
+
+/* Gaya untuk header */
+.landing-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end; /* Atur posisi tombol di kanan atas */
+  padding: 20px;
+  box-sizing: border-box;
+  position: absolute; /* Memungkinkan fleksibilitas posisi */
+  top: 0; /* Sesuaikan posisi vertikal */
+  right: 0; /* Sesuaikan posisi horizontal */
+  z-index: 1; /* Pastikan tombol berada di atas konten */
+}
+
+/* Grup tombol */
+.button-group {
+  display: flex;
+  gap: 10px; /* Jarak antar tombol */
+}
+
+/* Tombol login dan register */
+.btn-login,
+.btn-register {
+  background-color: #ff0000;
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Transition untuk efek hover */
+}
+
+/* Efek hover */
+.btn-login:hover,
+.btn-register:hover {
+  background-color: white; /* Ganti background menjadi putih */
+  color: #ff0000; /* Ganti teks menjadi merah */
+}
+
+
+/* Gaya untuk bagian utama */
+.landing-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1; /* Pastikan teks berada di atas latar belakang */
+  position: relative;
+}
+
+/* Judul dengan font Indie Flower */
+.landing-title {
+  font-family: "Indie Flower", cursive;
+  font-size: 5rem; /* Ukuran besar untuk judul */
+  color: #8d0000;
+  margin-bottom: 80px;
+}
+
+/* Garis pemisah */
+.landing-line-break {
+  width: 120%; /* Lebar dapat diatur sesuai kebutuhan */
+  border: 0;
+  height: 3px;
+  background-color: #c3b5b5;
+  margin: 20px 0;
+}
+
+/* Deskripsi/slogan dengan font Metal */
+.landing-slogan {
+  font-family: "Metal", sans-serif;
+  font-size: 1.5rem; /* Ukuran slogan */
+  color: #ffffff;
+  margin-top: 20px;
+}
+
+/* Efek blur pada gambar latar belakang */
+.landing-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../public/images/bg2.jpg'); /* Path relatif dari public */
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px); /* Efek blur */
+  z-index: -1; /* Pastikan gambar berada di belakang konten */
+}
+
+/* Gaya untuk responsivitas */
+@media (max-width: 768px) {
+  .landing-title {
+    font-size: 3rem; /* Ukuran judul lebih kecil di perangkat mobile */
+  }
+
+  .landing-slogan {
+    font-size: 1.2rem; /* Ukuran slogan lebih kecil di perangkat mobile */
+  }
+
+  .btn-login,
+  .btn-register {
+    padding: 8px 16px; /* Ukuran tombol lebih kecil di perangkat mobile */
+  }
+}

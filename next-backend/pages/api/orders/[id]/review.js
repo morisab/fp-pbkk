@@ -1,8 +1,12 @@
 import pool from '../../../../lib/db';  // Database connection
 import { verifyToken, verifyAdmin } from '../../../../lib/auth';  // Assuming you have authentication middleware
+import { runMiddleware } from '../../../../lib/cors';  // Import the CORS middleware function
 
 // Handle review operations (POST, PUT, DELETE, GET)
 export default async function handler(req, res) {
+    // Menjalankan middleware CORS
+    await runMiddleware(req, res, () => {});
+
     const { id } = req.query;
 
     if (req.method === 'POST') {

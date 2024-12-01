@@ -1,7 +1,10 @@
 import pool from '../../../lib/db';
 import { verifyToken, verifyAdmin } from '../../../lib/auth';
+import { runMiddleware } from '../../../lib/cors';
 
 export default async function handler(req, res) {
+    await runMiddleware(req, res, () => {});
+
     const { id } = req.query; // Get the order ID from the query parameter
 
     if (req.method === 'GET') {

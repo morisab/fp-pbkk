@@ -1,10 +1,12 @@
 import jwt from 'jsonwebtoken';
 import pool from './db';
 
-const secret = process.env.JWT_SECRET || 'hasu';
+//const secret = process.env.JWT_SECRET || 'hasu';
+const secret = 'hasu'; // Coba hardcode secret sementara
 
 export function verifyToken(req) {
     const authHeader = req.headers.authorization;
+    console.log('Authorization Header:', authHeader); // Menambahkan log untuk memeriksa header
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         throw new Error('Access token missing or invalid');
     }

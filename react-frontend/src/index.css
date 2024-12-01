@@ -1,0 +1,39 @@
+/* Gabungan animasi Slide Down dan Fade Out */
+@keyframes slide-down-fade-out {
+  9% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  10% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  12% {
+    opacity: 0;
+  }
+}
+
+/* Menambahkan kelas animasi */
+.animate-slide-down-fade-out {
+  animation: slide-down-fade-out 0.05s ease-in-out forwards;
+}
+
+/* Z-index tinggi untuk notifikasi */
+.notification {
+  z-index: 9999;
+}
+
+/* index.css */
+.font-rouge-script {
+  font-family: 'Rouge Script', cursive;
+}
+
+/* index.css */
+.font-tinos-script {
+  font-family: 'Tinos', serif;
+}
+
+/* index.css */
+.font-poiret-script {
+  font-family: 'Poiret One', cursive;
+}

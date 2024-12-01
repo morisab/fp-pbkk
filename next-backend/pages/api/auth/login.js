@@ -1,10 +1,13 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import pool from '../../../lib/db';
+import { runMiddleware } from '@/lib/cors';
 
 const secret = process.env.JWT_SECRET || 'hasu'; // Pastikan menggunakan secret yang aman
 
 export default async function handler(req, res) {
+    await runMiddleware(req, res, () => {});
+
     if (req.method === 'POST') {
         const { email, password } = req.body;
 

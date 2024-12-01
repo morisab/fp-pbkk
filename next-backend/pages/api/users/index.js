@@ -1,8 +1,12 @@
 import pool from '../../../lib/db';  // Database connection
 import { verifyToken, verifyAdmin } from '../../../lib/auth';  // Authentication middleware
+import { runMiddleware } from '../../../lib/cors';  // Import middleware CORS
 
 // Handle user operations (GET)
 export default async function handler(req, res) {
+    // Menjalankan middleware CORS
+    await runMiddleware(req, res, () => {});
+
     if (req.method === 'GET') {
         // Get all users
         try {

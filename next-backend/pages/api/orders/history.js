@@ -1,7 +1,11 @@
 import pool from '../../../lib/db';
 import { verifyToken } from '../../../lib/auth';  // Assuming verifyToken middleware exists
+import { runMiddleware } from '../../../lib/cors';  // Import the CORS middleware
 
 export default async function handler(req, res) {
+    // Menjalankan CORS middleware
+    await runMiddleware(req, res, () => {});
+
     if (req.method === 'GET') {
         // Get order history for a user
         try {
