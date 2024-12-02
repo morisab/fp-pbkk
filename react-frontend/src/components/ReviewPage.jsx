@@ -109,7 +109,7 @@ const ReviewPage = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/orders/${id}/review`,
+        `http://localhost:3000/api/orders/${id}/review`,
         { rating, comment },
         {
           headers: {

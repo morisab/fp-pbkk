@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import styled from 'styled-components'; // Import styled-components
+import styled from "styled-components"; // Import styled-components
 
 // Styled-components
 const Container = styled.div`
@@ -18,7 +18,7 @@ const Title = styled.h1`
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
-  font-family: 'Poiret One', cursive;
+  font-family: "Poiret One", cursive;
   color: #1a202c;
 `;
 
@@ -99,7 +99,7 @@ const PaymentPage = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/orders/${orderId}/payment`,
+        `http://localhost:3000/api/orders/${orderId}/payment`,
         { payment_method: selectedPaymentMethod },
         {
           headers: {
@@ -134,10 +134,7 @@ const PaymentPage = () => {
             <option value="Qris">QRIS</option>
           </Select>
         </div>
-        <Button
-          onClick={confirmPayment}
-          disabled={!selectedPaymentMethod}
-        >
+        <Button onClick={confirmPayment} disabled={!selectedPaymentMethod}>
           Confirm Payment
         </Button>
       </PaymentCard>
