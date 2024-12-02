@@ -1,6 +1,6 @@
-import pool from '../../../../lib/db';  // Database connection
-import { verifyToken, verifyAdmin } from '../../../../lib/auth';  // Assuming you have authentication middleware
-import { runMiddleware } from '../../../../lib/cors';  // Import the CORS middleware function
+import pool from '../../../../lib/db';
+import { verifyToken, verifyAdmin } from '../../../../lib/auth';
+import { runMiddleware } from '../../../../lib/cors';
 
 // Handle review operations (POST, PUT, DELETE, GET)
 export default async function handler(req, res) {

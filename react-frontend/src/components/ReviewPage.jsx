@@ -93,7 +93,7 @@ const ReviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [rating, setRating] = useState("");
+  const [rating, setRating] = useState(0); // Store rating as a number
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -109,7 +109,7 @@ const ReviewPage = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/orders/${id}/review`,
+        `http://localhost:3000/api/orders/${id}/review`,
         { rating, comment },
         {
           headers: {
@@ -140,8 +140,8 @@ const ReviewPage = () => {
                   <RadioButton
                     type="radio"
                     value={num}
-                    checked={rating === num.toString()}
-                    onChange={() => setRating(num.toString())}
+                    checked={rating === num} // Compare numbers
+                    onChange={() => setRating(num)} // Set as number directly
                     required
                   />
                   <span>{num}</span>

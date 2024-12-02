@@ -120,11 +120,21 @@ const LoginPage = () => {
         email,
         password,
       });
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userId", response.data.userID);
-      localStorage.setItem("isAdmin", response.data.isAdmin);
-      localStorage.setItem("name", response.data.name);
-      navigate("/dashboard");
+  
+      const { token, userID, isAdmin, name } = response.data;
+  
+      // Simpan data ke localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userID);
+      localStorage.setItem("isAdmin", isAdmin);
+      localStorage.setItem("name", name);
+  
+      // Redirect berdasarkan isAdmin
+      if (isAdmin === 1) {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       setErrorMessage(
         error.response?.data?.message || "An error occurred. Please try again."
@@ -132,7 +142,7 @@ const LoginPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <>

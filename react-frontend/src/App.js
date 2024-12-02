@@ -10,6 +10,10 @@ import OrderPage from "./components/OrderPage";
 import OrderHistory from "./components/OrderHistory";
 import ReviewPage from "./components/ReviewPage";
 import "./App.css";
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import UserManagement from "./components/Admin/UserManagement";
+import OrderManagement from "./components/Admin/OrderManagement";
+import MenuManagement from "./components/Admin/MenuManagement";
 
 function App() {
   return (
@@ -25,6 +29,11 @@ function App() {
           <Route path="/order" element={<OrderPage />} />
           <Route path="/orders-history" element={<OrderHistory />} />
           <Route path="/order/:id/review" element={<ReviewPage />} />
+          <Route path="/admin" element={<AdminDashboard />}>
+            <Route path="users" element={<UserManagement />} />
+            <Route path="orders" element={<OrderManagement />} />
+            <Route path="menu" element={<MenuManagement />} />
+          </Route>
         </Routes>
       </div>
     </Router>

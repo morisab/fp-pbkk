@@ -125,11 +125,14 @@ const OrderHistory = () => {
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/orders/history", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:3000/api/orders/history",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setOrders(response.data);
       } catch (error) {
         console.error("Error fetching order history:", error);
@@ -176,7 +179,9 @@ const OrderHistory = () => {
       {/* Navbar */}
       <Navbar>
         <div className="flex justify-between items-center">
-          <NavbarButton onClick={() => navigate("/dashboard")}>Dashboard</NavbarButton>
+          <NavbarButton onClick={() => navigate("/dashboard")}>
+            Dashboard
+          </NavbarButton>
           <LogoutButton onClick={logout}>Logout</LogoutButton>
         </div>
       </Navbar>
@@ -204,15 +209,20 @@ const OrderHistory = () => {
                 {orders.length > 0 ? (
                   orders.map((order) => (
                     <tr key={order.order_id}>
-                      <TableCell className="order-id-cell">{order.order_id}</TableCell>
+                      <TableCell className="order-id-cell">
+                        {order.order_id}
+                      </TableCell>
                       <TableCell>{formatDate(order.order_date)}</TableCell>
                       <TableCell>{order.status}</TableCell>
-                      <TableCell>{formatCurrency(order.total_amount)}</TableCell>
+                      <TableCell>
+                        {formatCurrency(order.total_amount)}
+                      </TableCell>
                       <TableCell>
                         <ul>
-                          {order.order.map((item) => (
-                            <li key={item.menu_names}>
-                              {item.menu_names} - {item.quantity} x {formatCurrency(item.price)}
+                          {order.items.map((item) => (
+                            <li key={item.menu_name}>
+                              {item.menu_name} - {item.quantity} x{" "}
+                              {formatCurrency(item.price)}
                             </li>
                           ))}
                         </ul>
@@ -221,16 +231,20 @@ const OrderHistory = () => {
                       <TableCell>
                         {!order.review ? (
                           order.status !== "paid" ? (
-                            <Button onClick={navigateToOrder}>Selesaikan Pembayaran</Button>
+                            <Button onClick={navigateToOrder}>
+                              Selesaikan Pembayaran
+                            </Button>
                           ) : (
-                            <Button onClick={() => navigateToReview(order.order_id)}>Review Sekarang</Button>
+                            <Button
+                              onClick={() => navigateToReview(order.order_id)}
+                            >
+                              Review Sekarang
+                            </Button>
                           )
+                        ) : order.review.rating !== null ? (
+                          <p>Rating: {order.review.rating}</p>
                         ) : (
-                          order.review.rating !== null ? (
-                            <p>Rating: {order.review.rating}</p>
-                          ) : (
-                            <p>Belum ada review</p>
-                          )
+                          <p>Belum ada review</p>
                         )}
                       </TableCell>
                     </tr>
