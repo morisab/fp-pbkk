@@ -49,6 +49,15 @@ const AdminDashboard = () => {
               </Link>
             </li>
             <li>
+              <Link
+                to="/admin/reviews"
+                className="block p-4 text-gray-700 hover:bg-green-100"
+              >
+                Order Reviews
+              </Link>
+            </li>
+
+            <li>
               <button
                 onClick={logout}
                 className="block w-full text-left p-4 text-gray-700 hover:bg-red-100"

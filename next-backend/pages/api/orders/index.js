@@ -5,7 +5,7 @@ import { runMiddleware } from '../../../lib/cors';  // Import middleware CORS
 // Create a new order or get all orders
 export default async function handler(req, res) {
     // Menjalankan middleware CORS
-    await runMiddleware(req, res, () => {});
+    await runMiddleware(req, res, () => { });
 
     if (req.method === 'POST') {
         // Create a new order
@@ -54,12 +54,63 @@ export default async function handler(req, res) {
         try {
             verifyToken(req); // Ensure the user is authenticated
             verifyAdmin(req); // Ensure the user is an admin
-            const [orders] = await pool.query('SELECT * FROM orders');
-            return res.status(200).json(orders);
+
+            // Query untuk mengambil semua pesanan
+            const [orders] = await pool.query(`
+                SELECT 
+                    o.id AS order_id,
+                    o.user_id,
+                    o.total_amount,
+                    o.order_date,
+                    o.status
+                FROM orders o
+                ORDER BY o.order_date DESC
+            `);
+
+            // Jika tidak ada pesanan, kembalikan array kosong
+            if (orders.length === 0) {
+                return res.json([]);
+            }
+
+            // Ambil semua order_id dari daftar pesanan
+            const orderIds = orders.map(order => order.order_id);
+
+            // Query untuk mengambil item pesanan
+            const [orderItems] = await pool.query(`
+                SELECT 
+                    oi.order_id,
+                    m.name AS menu_name,
+                    oi.quantity,
+                    m.price
+                FROM order_items oi
+                LEFT JOIN menu_items m ON oi.menu_id = m.id
+                WHERE oi.order_id IN (?);
+            `, [orderIds]);
+
+            // Gabungkan detail pesanan
+            const result = orders.map(order => {
+                const items = orderItems.filter(item => item.order_id === order.order_id);
+                const orderDetails = items.map(item => ({
+                    menu_name: item.menu_name,
+                    quantity: item.quantity,
+                    price: item.price,
+                }));
+
+                return {
+                    order_id: order.order_id,
+                    user_id: order.user_id,
+                    total_amount: order.total_amount,
+                    order_date: order.order_date,
+                    status: order.status,
+                    items: orderDetails,
+                };
+            });
+
+            // Kirimkan hasil
+            return res.status(200).json(result);
         } catch (error) {
-            return res.status(500).json({ message: 'Database error', error });
+            console.error('Error fetching orders:', error.message);
+            return res.status(500).json({ message: 'Database error', error: error.message });
         }
-    } else {
-        return res.status(405).json({ message: 'Method Not Allowed' });
     }
 }

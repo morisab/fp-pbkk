@@ -14,6 +14,7 @@ import AdminDashboard from "./components/Admin/AdminDashboard";
 import UserManagement from "./components/Admin/UserManagement";
 import OrderManagement from "./components/Admin/OrderManagement";
 import MenuManagement from "./components/Admin/MenuManagement";
+import OrderReview from "./components/Admin/OrderReview";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="users" element={<UserManagement />} />
             <Route path="orders" element={<OrderManagement />} />
             <Route path="menu" element={<MenuManagement />} />
+            <Route path="reviews" element={<OrderReview />} />
           </Route>
         </Routes>
       </div>

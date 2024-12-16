@@ -23,19 +23,16 @@ const OrderManagement = () => {
   const confirmOrder = async (orderId) => {
     const employeeId = prompt("Enter your employee ID:");
     if (!employeeId) return;
-  
+
     const token = localStorage.getItem("token");
-    
-    // Debugging: Log the token to ensure it is correct
-    console.log('Authorization Token:', token);
-  
+
     try {
       const response = await axios.patch(
         `http://localhost:3000/api/orders/${orderId}/confirm`,
         { employee_id: employeeId },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Ensure token is being sent here
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -46,7 +43,6 @@ const OrderManagement = () => {
       alert("Failed to confirm order.");
     }
   };
-  
 
   // Gunakan useEffect untuk memuat daftar pesanan saat komponen pertama kali dirender
   useEffect(() => {
@@ -71,22 +67,43 @@ const OrderManagement = () => {
         <tbody>
           {orders.length > 0 ? (
             orders.map((order) => (
-              <tr key={order.id}>
-                <td className="py-2 px-4 border-b">{order.id}</td>
-                <td className="py-2 px-4 border-b">{order.user_id}</td>
-                <td className="py-2 px-4 border-b">{order.total_amount}</td>
-                <td className="py-2 px-4 border-b">{order.status}</td>
-                <td className="py-2 px-4 border-b">
-                  {order.status === "pending" && (
-                    <button
-                      onClick={() => confirmOrder(order.id)}
-                      className="bg-blue-600 text-white px-4 py-1 rounded-md hover:bg-blue-700 transition-colors"
-                    >
-                      Confirm
-                    </button>
-                  )}
-                </td>
-              </tr>
+              <React.Fragment key={order.order_id}>
+                {/* Baris utama pesanan */}
+                <tr>
+                  <td className="py-2 px-4 border-b">{order.order_id}</td>
+                  <td className="py-2 px-4 border-b">{order.user_id}</td>
+                  <td className="py-2 px-4 border-b">
+                    Rp {order.total_amount.toLocaleString()}
+                  </td>
+                  <td className="py-2 px-4 border-b">{order.status}</td>
+                  <td className="py-2 px-4 border-b">
+                    {order.status === "pending" && (
+                      <button
+                        onClick={() => confirmOrder(order.order_id)}
+                        className="bg-blue-600 text-white px-4 py-1 rounded-md hover:bg-blue-700 transition-colors"
+                      >
+                        Confirm
+                      </button>
+                    )}
+                  </td>
+                </tr>
+                {/* Detail pesanan */}
+                <tr>
+                  <td colSpan="5" className="py-2 px-4">
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <h4 className="font-bold mb-2">Items Ordered:</h4>
+                      <ul className="list-disc pl-5">
+                        {order.items.map((item, index) => (
+                          <li key={index} className="mb-1">
+                            {item.menu_name} - {item.quantity} pcs @ Rp{" "}
+                            {item.price.toLocaleString()}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </React.Fragment>
             ))
           ) : (
             <tr>
