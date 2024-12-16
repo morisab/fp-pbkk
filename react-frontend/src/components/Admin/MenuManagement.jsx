@@ -30,7 +30,7 @@ const MenuManagement = () => {
   // Fungsi untuk membuat menu baru
   const createMenu = async () => {
     try {
-      await axios.post("http://localhost:5000/api/menu", menu, {
+      await axios.post("http://localhost:3000/api/menu-items", menu, {
         headers: { Authorization: `Bearer ${token}` },
       });
       resetForm();
@@ -44,7 +44,7 @@ const MenuManagement = () => {
   // Fungsi untuk mengupdate menu yang sudah ada
   const updateMenu = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/menu/${menu.id}`, menu, {
+      await axios.put(`http://localhost:3000/api/menu-items/${menu.id}`, menu, {
         headers: { Authorization: `Bearer ${token}` },
       });
       resetForm();
@@ -59,7 +59,7 @@ const MenuManagement = () => {
   const deleteMenu = async (id) => {
     if (window.confirm("Are you sure you want to delete this menu?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/menu/${id}`, {
+        await axios.delete(`http://localhost:3000/api/menu-items/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchMenus();
@@ -107,7 +107,10 @@ const MenuManagement = () => {
       <form onSubmit={handleSubmit} className="mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
               Menu Name
             </label>
             <input
@@ -120,31 +123,44 @@ const MenuManagement = () => {
             />
           </div>
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-gray-700"
+            >
               Price
             </label>
             <input
               type="number"
               id="price"
               value={menu.price || ""}
-              onChange={(e) => setMenu({ ...menu, price: e.target.value })}
+              onChange={(e) =>
+                setMenu({ ...menu, price: Number(e.target.value) })
+              }
               required
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
+            >
               Description
             </label>
             <textarea
               id="description"
               value={menu.description}
-              onChange={(e) => setMenu({ ...menu, description: e.target.value })}
+              onChange={(e) =>
+                setMenu({ ...menu, description: e.target.value })
+              }
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             ></textarea>
           </div>
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium text-gray-700"
+            >
               Category
             </label>
             <input
