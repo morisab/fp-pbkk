@@ -5,23 +5,29 @@ import { runMiddleware } from '../../../lib/cors';  // Import middleware CORS
 // Handle user operations (GET, PUT, DELETE)
 export default async function handler(req, res) {
     // Menjalankan middleware CORS
-    await runMiddleware(req, res, () => {});
+    await runMiddleware(req, res, () => { });
 
     const { id } = req.query;
 
     if (req.method === 'GET') {
-        // Get a user by ID
+        // Get a user by ID, including loyalty points
         try {
             verifyToken(req); // Ensure the user is authenticated
             verifyAdmin(req); // Ensure the user is an admin
-            const [rows] = await pool.query('SELECT id, name, email FROM users WHERE id = ?', [id]);
+            const [rows] = await pool.query(
+                `SELECT users.id, users.name, users.email, loyalty_programs.points 
+                 FROM users
+                 LEFT JOIN loyalty_programs ON users.id = loyalty_programs.user_id
+                 WHERE users.id = ?`, [id]
+            );
+
             const user = rows[0];
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            return res.json(user);
+            return res.json(user); // Return user with loyalty points
         } catch (error) {
             return res.status(500).json({ message: 'Database error', error });
         }
