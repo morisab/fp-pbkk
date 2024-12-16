@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   await runMiddleware(req, res);
 
   const { id } = req.query;
-  
+
   // Log the incoming request body and headers
   console.log('Request Body:', req.body);  // Log the body (should contain employee_id)
   console.log('Authorization Header:', req.headers.authorization); // Log the authorization header
@@ -46,7 +46,12 @@ export default async function handler(req, res) {
 
     // Confirm the order and update status to "paid"
     await pool.query('UPDATE orders SET status = "paid", employee_id = ? WHERE id = ?', [employee_id, id]);
-
+    const [loyaltyRows] = await pool.query('SELECT points FROM loyalty_programs WHERE user_id = ?', [user_id]);
+    const loyaltyProgram = loyaltyRows[0];
+    if (loyaltyProgram) {
+      const newPoints = loyaltyProgram.points + Math.floor(total_amount / 1000);
+      await pool.query('UPDATE loyalty_programs SET points = ? WHERE user_id = ?', [newPoints, user_id]);
+    }
     // Return a success message
     console.log(`Order ID ${id} confirmed by employee ${employee_id} and status updated to 'paid'`);
     res.status(200).json({ message: `Order ID ${id} confirmed successfully and marked as 'paid'` });
